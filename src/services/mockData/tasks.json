@@ -1,0 +1,79 @@
+[
+  {
+    "id": "1",
+    "title": "Review quarterly sales reports and prepare presentation for board meeting",
+    "completed": false,
+    "category": "work",
+    "priority": "high",
+    "dueDate": "2024-01-15",
+    "createdAt": "2024-01-08T09:00:00Z",
+    "updatedAt": "2024-01-08T09:00:00Z",
+    "archived": false
+  },
+  {
+    "id": "2",
+    "title": "Schedule annual dental cleaning appointment",
+    "completed": true,
+    "category": "personal",
+    "priority": "medium",
+    "dueDate": "2024-01-12",
+    "createdAt": "2024-01-05T14:30:00Z",
+    "updatedAt": "2024-01-10T16:45:00Z",
+    "archived": false
+  },
+  {
+    "id": "3",
+    "title": "Buy groceries for weekend dinner party",
+    "completed": false,
+    "category": "shopping",
+    "priority": "medium",
+    "dueDate": "2024-01-13",
+    "createdAt": "2024-01-07T11:15:00Z",
+    "updatedAt": "2024-01-07T11:15:00Z",
+    "archived": false
+  },
+  {
+    "id": "4",
+    "title": "Complete React certification course final project",
+    "completed": false,
+    "category": "learning",
+    "priority": "high",
+    "dueDate": "2024-01-20",
+    "createdAt": "2024-01-06T08:00:00Z",
+    "updatedAt": "2024-01-06T08:00:00Z",
+    "archived": false
+  },
+  {
+    "id": "5",
+    "title": "Plan weekend hiking trip to Blue Ridge Mountains",
+    "completed": true,
+    "category": "personal",
+    "priority": "low",
+    "dueDate": null,
+    "createdAt": "2024-01-04T19:20:00Z",
+    "updatedAt": "2024-01-09T12:30:00Z",
+    "archived": false
+  },
+  {
+    "id": "6",
+    "title": "Update LinkedIn profile with recent accomplishments",
+    "completed": false,
+    "category": "work",
+    "priority": "low",
+    "dueDate": null,
+    "createdAt": "2024-01-03T16:45:00Z",
+    "updatedAt": "2024-01-03T16:45:00Z",
+    "archived": false
+  },
+  {
+    "id": "7",
+    "title": "Research and compare car insurance quotes",
+    "completed": true,
+    "category": "personal",
+    "priority": "medium",
+    "dueDate": "2024-01-05",
+    "createdAt": "2024-01-01T10:00:00Z",
+    "updatedAt": "2024-01-04T15:20:00Z",
+    "archived": true
+  }
+]

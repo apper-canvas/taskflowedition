@@ -1,0 +1,42 @@
+[
+  {
+    "id": "work",
+    "name": "Work",
+    "color": "#5B46E8",
+    "taskCount": 3,
+    "activeTasks": 2,
+    "completedTasks": 1
+  },
+  {
+    "id": "personal",
+    "name": "Personal",
+    "color": "#10B981",
+    "taskCount": 4,
+    "activeTasks": 1,
+    "completedTasks": 3
+  },
+  {
+    "id": "shopping",
+    "name": "Shopping",
+    "color": "#F59E0B",
+    "taskCount": 1,
+    "activeTasks": 1,
+    "completedTasks": 0
+  },
+  {
+    "id": "learning",
+    "name": "Learning",
+    "color": "#3B82F6",
+    "taskCount": 1,
+    "activeTasks": 1,
+    "completedTasks": 0
+  },
+  {
+    "id": "health",
+    "name": "Health",
+    "color": "#EF4444",
+    "taskCount": 0,
+    "activeTasks": 0,
+    "completedTasks": 0
+  }
+]
