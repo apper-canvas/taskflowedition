@@ -10,10 +10,10 @@ const Layout = () => {
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
-  return (
-    <div className="h-screen flex flex-col overflow-hidden max-w-full">
+return (
+    <div className="min-h-screen flex flex-col max-w-full">
       {/* Header */}
-      <header className="flex-shrink-0 h-16 bg-white border-b border-gray-200 z-40">
+      <header className="sticky top-0 flex-shrink-0 h-16 bg-white border-b border-gray-200 z-40">
         <div className="h-full px-4 flex items-center justify-between max-w-full">
           {/* Logo */}
           <div className="flex items-center space-x-3">
@@ -95,15 +95,15 @@ const Layout = () => {
         )}
       </AnimatePresence>
 
-      {/* Main Content */}
-      <main className="flex-1 overflow-y-auto">
+{/* Main Content */}
+      <main className="flex-1 min-h-0">
         <motion.div
           key={location.pathname}
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
+exit={{ opacity: 0, x: -20 }}
           transition={{ duration: 0.3 }}
-          className="h-full"
+          className="min-h-full"
         >
           <Outlet />
         </motion.div>

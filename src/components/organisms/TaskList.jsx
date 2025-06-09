@@ -28,10 +28,10 @@ const TaskList = ({
 }) => {
   const allTasksCount = tasks.length;
 
-  return (
-    <div className="flex-1 flex flex-col min-w-0 min-h-0">
+return (
+    <div className="flex-1 min-w-0">
       {/* Header */}
-      <div className="bg-white rounded-lg p-6 shadow-sm mb-6 flex-shrink-0">
+      <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <h2 className="text-2xl font-bold font-display text-gray-900">
             Your Tasks
@@ -78,9 +78,8 @@ const TaskList = ({
           ))}
         </div>
       </div>
-
-      {/* Task List */}
-      <div className="flex-1 overflow-y-auto min-h-0">
+{/* Task List */}
+      <div className="space-y-3 pb-6">
         {tasks.length === 0 ? (
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
@@ -112,11 +111,10 @@ const TaskList = ({
                 Create Task
               </Button>
             )}
-          </motion.div>
+</motion.div>
         ) : (
-          <div className="space-y-3 pb-6">
-            <AnimatePresence>
-              {tasks.map((task, index) => (
+          <AnimatePresence>
+            {tasks.map((task, index) => (
                 <TaskCard
                   key={task.id}
                   task={task}
@@ -132,10 +130,9 @@ const TaskList = ({
                   setEditTitle={setEditTitle}
                   // Prop for transition delay to maintain staggered animation
                   transition={{ delay: index * 0.05, duration: 0.3 }}
-                />
+/>
               ))}
             </AnimatePresence>
-          </div>
         )}
       </div>
     </div>

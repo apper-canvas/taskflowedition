@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function App() {
   return (
     <BrowserRouter>
-      <div className="h-screen overflow-hidden bg-gray-50">
+      <div className="min-h-screen bg-gray-50">
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Navigate to="/home" replace />} />

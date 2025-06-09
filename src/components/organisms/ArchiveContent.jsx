@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
-import { parseISO, isToday, isAfter } from 'date-fns';
+import { parseISO, isToday, isAfter, format } from 'date-fns';
 import ApperIcon from '@/components/ApperIcon';
 import Input from '@/components/atoms/Input';
 import Button from '@/components/atoms/Button';
@@ -73,13 +73,43 @@ const ArchiveContent = () => {
   const isOverdue = (dueDate) => {
     if (!dueDate) return false;
     return isAfter(new Date(), parseISO(dueDate)) && !isToday(parseISO(dueDate));
+};
+
+  // Helper components for badges
+  const CategoryBadge = ({ category }) => {
+    if (!category) return null;
+    return (
+      <span 
+        className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium"
+        style={{ 
+          backgroundColor: category.color + '20', 
+          color: category.color 
+        }}
+      >
+        {category.name}
+      </span>
+    );
   };
 
+  const PriorityBadge = ({ priority }) => {
+    const priorityConfig = {
+      high: { label: 'High', color: 'bg-red-100 text-red-800' },
+      medium: { label: 'Medium', color: 'bg-yellow-100 text-yellow-800' },
+      low: { label: 'Low', color: 'bg-green-100 text-green-800' }
+    };
+    
+    const config = priorityConfig[priority] || priorityConfig.medium;
+    
+    return (
+      <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.color}`}>
+        {config.label}
+      </span>
+    );
+  };
 
   const filteredTasks = archivedTasks.filter(task =>
-    task.title.toLowerCase().includes(searchQuery.toLowerCase())
+    task?.title?.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
   if (loading) {
     return (
       <div className="h-full p-6">
@@ -126,11 +156,11 @@ const ArchiveContent = () => {
     );
   }
 
-  return (
-    <div className="h-full p-6 max-w-full overflow-hidden">
-      <div className="max-w-4xl mx-auto h-full flex flex-col">
+return (
+    <div className="min-h-screen p-6 max-w-full">
+      <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="bg-white rounded-lg p-6 shadow-sm mb-6 flex-shrink-0">
+        <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
           <div className="flex items-center space-x-3 mb-6">
             <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
               <ApperIcon name="Archive" className="w-5 h-5 text-gray-600" />
@@ -153,9 +183,8 @@ const ArchiveContent = () => {
             />
           </div>
         </div>
-
-        {/* Archived Tasks */}
-        <div className="flex-1 overflow-y-auto min-h-0">
+{/* Archived Tasks */}
+        <div className="space-y-3 pb-6">
           {filteredTasks.length === 0 ? (
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
@@ -177,11 +206,10 @@ const ArchiveContent = () => {
                   : 'Completed tasks you archive will appear here'
                 }
               </p>
-            </motion.div>
+</motion.div>
           ) : (
-            <div className="space-y-3 pb-6">
-              <AnimatePresence>
-                {filteredTasks.map((task, index) => (
+            <AnimatePresence>
+              {filteredTasks.map((task, index) => (
                     <motion.div
                       key={task.id}
                       initial={{ opacity: 0, y: 20 }}
@@ -243,10 +271,9 @@ const ArchiveContent = () => {
                           </Button>
                         </div>
                       </div>
-                    </motion.div>
+</motion.div>
                 ))}
               </AnimatePresence>
-            </div>
           )}
         </div>
       </div>

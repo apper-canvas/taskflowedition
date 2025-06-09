@@ -213,10 +213,10 @@ const MainFeature = () => {
     );
   }
 
-  return (
-    <div className="h-full p-6 max-w-full overflow-hidden">
-      <div className="max-w-6xl mx-auto h-full flex flex-col">
-        <div className="flex flex-col lg:flex-row gap-6 h-full min-h-0">
+return (
+    <div className="min-h-screen p-6 max-w-full">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex flex-col lg:flex-row gap-6 min-h-0">
           {/* Sidebar */}
           <div className="w-full lg:w-64 flex-shrink-0">
             <CategoryFilter
@@ -227,10 +227,10 @@ const MainFeature = () => {
             />
           </div>
 
-          {/* Main Content */}
-          <div className="flex-1 flex flex-col min-w-0 min-h-0">
+{/* Main Content */}
+          <div className="flex-1 min-w-0">
             {/* Header */}
-            <div className="bg-white rounded-lg p-6 shadow-sm mb-6 flex-shrink-0">
+            <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <h2 className="text-2xl font-bold font-display text-gray-900">
                   Your Tasks
@@ -277,9 +277,8 @@ const MainFeature = () => {
                 ))}
               </div>
             </div>
-
-            {/* Task List */}
-            <div className="flex-1 overflow-y-auto min-h-0">
+{/* Task List */}
+            <div className="space-y-3 pb-6">
               {filteredTasks.length === 0 ? (
                 <motion.div
                   initial={{ scale: 0.9, opacity: 0 }}
@@ -311,11 +310,10 @@ const MainFeature = () => {
                       Create Task
                     </motion.button>
                   )}
-                </motion.div>
+</motion.div>
               ) : (
-                <div className="space-y-3 pb-6">
-                  <AnimatePresence>
-                    {filteredTasks.map((task, index) => {
+                <AnimatePresence>
+                  {filteredTasks.map((task, index) => {
                       const category = getCategoryById(task.category);
                       const overdue = isOverdue(task.dueDate);
                       
@@ -453,10 +451,9 @@ const MainFeature = () => {
                             </div>
                           </div>
                         </motion.div>
-                      );
+);
                     })}
-                  </AnimatePresence>
-                </div>
+                </AnimatePresence>
               )}
             </div>
           </div>
