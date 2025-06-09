@@ -24,38 +24,47 @@ const ArchiveContent = () => {
     setLoading(true);
     setError(null);
     try {
-      const [tasksData, categoriesData] = await Promise.all([
+const [tasksData, categoriesData] = await Promise.all([
         taskService.getAll(),
         categoryService.getAll()
       ]);
-      setArchivedTasks(tasksData.filter(task => task.archived));
-      setCategories(categoriesData);
+      setArchivedTasks((tasksData || []).filter(task => task.archived));
+      setCategories(categoriesData || []);
     } catch (err) {
       setError(err.message || 'Failed to load archived tasks');
       toast.error('Failed to load archived tasks');
+      // Set empty arrays on error
+      setArchivedTasks([]);
+      setCategories([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleRestoreTask = async (taskId) => {
+const handleRestoreTask = async (taskId) => {
     try {
       const updatedTask = await taskService.update(taskId, { archived: false });
-      setArchivedTasks(prev => prev.filter(task => task.id !== taskId));
-      toast.success('Task restored successfully');
+      if (updatedTask) {
+        setArchivedTasks(prev => prev.filter(task => task.id !== taskId));
+        toast.success('Task restored successfully');
+      }
     } catch (err) {
-      toast.error('Failed to restore task');
+      console.error('Error restoring task:', err);
+      toast.error(err.message || 'Failed to restore task');
     }
   };
 
-  const handleDeleteTask = async (taskId) => {
+const handleDeleteTask = async (taskId) => {
     if (window.confirm('Are you sure you want to permanently delete this task?')) {
       try {
-        await taskService.delete(taskId);
-        setArchivedTasks(prev => prev.filter(task => task.id !== taskId));
-        toast.success('Task permanently deleted');
+        const success = await taskService.delete(taskId);
+        if (success) {
+          setArchivedTasks(prev => prev.filter(task => task.id !== taskId));
+          toast.success('Task permanently deleted');
+        }
       } catch (err) {
-        toast.error('Failed to delete task');
+        console.error('Error deleting task:', err);
+        toast.error(err.message || 'Failed to delete task');
       }
     }
   };

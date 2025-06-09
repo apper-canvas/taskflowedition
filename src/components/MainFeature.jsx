@@ -29,52 +29,64 @@ const MainFeature = () => {
     setLoading(true);
     setError(null);
     try {
-      const [tasksData, categoriesData] = await Promise.all([
+const [tasksData, categoriesData] = await Promise.all([
         taskService.getAll(),
         categoryService.getAll()
       ]);
-      setTasks(tasksData);
-      setCategories(categoriesData);
+      setTasks(tasksData || []);
+      setCategories(categoriesData || []);
     } catch (err) {
       setError(err.message || 'Failed to load data');
       toast.error('Failed to load tasks');
+      // Set empty arrays on error
+      setTasks([]);
+      setCategories([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleCreateTask = async (taskData) => {
+const handleCreateTask = async (taskData) => {
     try {
       const newTask = await taskService.create(taskData);
-      setTasks(prev => [newTask, ...prev]);
-      setShowForm(false);
-      toast.success('Task created successfully');
-    } catch (err) {
-      toast.error('Failed to create task');
-    }
-  };
-
-  const handleUpdateTask = async (taskId, updates) => {
-    try {
-      const updatedTask = await taskService.update(taskId, updates);
-      setTasks(prev => prev.map(task => 
-        task.id === taskId ? updatedTask : task
-      ));
-      if (updates.completed !== undefined) {
-        toast.success(updates.completed ? 'Task completed!' : 'Task reopened');
+      if (newTask) {
+        setTasks(prev => [newTask, ...prev]);
+        setShowForm(false);
+        toast.success('Task created successfully');
       }
     } catch (err) {
-      toast.error('Failed to update task');
+      console.error('Error creating task:', err);
+      toast.error(err.message || 'Failed to create task');
     }
   };
 
-  const handleDeleteTask = async (taskId) => {
+const handleUpdateTask = async (taskId, updates) => {
     try {
-      await taskService.delete(taskId);
-      setTasks(prev => prev.filter(task => task.id !== taskId));
-      toast.success('Task deleted');
+      const updatedTask = await taskService.update(taskId, updates);
+      if (updatedTask) {
+        setTasks(prev => prev.map(task => 
+          task.id === taskId ? updatedTask : task
+        ));
+        if (updates.completed !== undefined) {
+          toast.success(updates.completed ? 'Task completed!' : 'Task reopened');
+        }
+      }
     } catch (err) {
-      toast.error('Failed to delete task');
+      console.error('Error updating task:', err);
+      toast.error(err.message || 'Failed to update task');
+    }
+  };
+
+const handleDeleteTask = async (taskId) => {
+    try {
+      const success = await taskService.delete(taskId);
+      if (success) {
+        setTasks(prev => prev.filter(task => task.id !== taskId));
+        toast.success('Task deleted');
+      }
+    } catch (err) {
+      console.error('Error deleting task:', err);
+      toast.error(err.message || 'Failed to delete task');
     }
   };
 
