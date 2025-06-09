@@ -1,12 +1,15 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
-import { format, parseISO } from 'date-fns';
-import ApperIcon from '../components/ApperIcon';
-import taskService from '../services/api/taskService';
-import categoryService from '../services/api/categoryService';
+import { parseISO, isToday, isAfter } from 'date-fns';
+import ApperIcon from '@/components/ApperIcon';
+import Input from '@/components/atoms/Input';
+import Button from '@/components/atoms/Button';
+import TaskCard from '@/components/molecules/TaskCard';
+import taskService from '@/services/api/taskService';
+import categoryService from '@/services/api/categoryService';
 
-const Archive = () => {
+const ArchiveContent = () => {
   const [archivedTasks, setArchivedTasks] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -57,9 +60,21 @@ const Archive = () => {
     }
   };
 
+  // Archive doesn't support inline edit/toggle, but TaskCard expects these props.
+  // We can pass no-op functions or hide the elements in TaskCard if needed,
+  // but for a true atomic design, TaskCard should be flexible or have a specific
+  // 'archive' variant. For now, pass no-ops and hide actions.
+  const noOp = () => {};
+
   const getCategoryById = (categoryId) => {
     return categories.find(cat => cat.id === categoryId);
   };
+
+  const isOverdue = (dueDate) => {
+    if (!dueDate) return false;
+    return isAfter(new Date(), parseISO(dueDate)) && !isToday(parseISO(dueDate));
+  };
+
 
   const filteredTasks = archivedTasks.filter(task =>
     task.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -100,12 +115,12 @@ const Archive = () => {
           <ApperIcon name="AlertCircle" className="w-16 h-16 text-gray-300 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-gray-900 mb-2">Failed to load archive</h3>
           <p className="text-gray-500 mb-4">{error}</p>
-          <button
+          <Button
             onClick={loadArchivedTasks}
             className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-secondary transition-colors duration-200"
           >
             Try Again
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -129,7 +144,7 @@ const Archive = () => {
           {/* Search */}
           <div className="relative">
             <ApperIcon name="Search" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-            <input
+            <Input
               type="text"
               placeholder="Search archived tasks..."
               value={searchQuery}
@@ -166,10 +181,7 @@ const Archive = () => {
           ) : (
             <div className="space-y-3 pb-6">
               <AnimatePresence>
-                {filteredTasks.map((task, index) => {
-                  const category = getCategoryById(task.category);
-                  
-                  return (
+                {filteredTasks.map((task, index) => (
                     <motion.div
                       key={task.id}
                       initial={{ opacity: 0, y: 20 }}
@@ -189,28 +201,12 @@ const Archive = () => {
                           
                           <div className="flex flex-wrap items-center gap-2 mb-2">
                             {/* Category Badge */}
-                            {category && (
-                              <span
-                                className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium"
-                                style={{
-                                  backgroundColor: `${category.color}20`,
-                                  color: category.color
-                                }}
-                              >
-                                {category.name}
-                              </span>
+                            {getCategoryById(task.category) && (
+                              <CategoryBadge category={getCategoryById(task.category)} />
                             )}
 
                             {/* Priority Badge */}
-                            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                              task.priority === 'high' 
-                                ? 'bg-red-100 text-red-800' 
-                                : task.priority === 'medium'
-                                ? 'bg-yellow-100 text-yellow-800'
-                                : 'bg-blue-100 text-blue-800'
-                            }`}>
-                              {task.priority}
-                            </span>
+                            <PriorityBadge priority={task.priority} />
 
                             {/* Completed Status */}
                             <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -227,7 +223,7 @@ const Archive = () => {
 
                         {/* Actions */}
                         <div className="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ml-4">
-                          <motion.button
+                          <Button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={() => handleRestoreTask(task.id)}
@@ -235,8 +231,8 @@ const Archive = () => {
                             title="Restore task"
                           >
                             <ApperIcon name="Undo2" size={16} />
-                          </motion.button>
-                          <motion.button
+                          </Button>
+                          <Button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={() => handleDeleteTask(task.id)}
@@ -244,12 +240,11 @@ const Archive = () => {
                             title="Delete permanently"
                           >
                             <ApperIcon name="Trash2" size={16} />
-                          </motion.button>
+                          </Button>
                         </div>
                       </div>
                     </motion.div>
-                  );
-                })}
+                ))}
               </AnimatePresence>
             </div>
           )}
@@ -259,4 +254,4 @@ const Archive = () => {
   );
 };
 
-export default Archive;
+export default ArchiveContent;

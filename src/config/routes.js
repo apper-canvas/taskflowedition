@@ -1,21 +1,22 @@
-import Home from '../pages/Home';
-import Archive from '../pages/Archive';
-import NotFound from '../pages/NotFound';
+import HomePage from '@/components/pages/HomePage';
+import ArchivePage from '@/components/pages/ArchivePage';
+// NotFoundPage is used directly in App.jsx now, not via routes config
 
 export const routes = {
   home: {
     id: 'home',
     label: 'Tasks',
+label: 'Tasks',
     path: '/home',
     icon: 'CheckSquare',
-    component: Home
+    component: HomePage
   },
   archive: {
     id: 'archive',
-    label: 'Archive',
+label: 'Archive',
     path: '/archive',
     icon: 'Archive',
-    component: Archive
+    component: ArchivePage
   }
 };
 
